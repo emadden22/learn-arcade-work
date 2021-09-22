@@ -1,3 +1,4 @@
+
 import arcade
 arcade.open_window(500, 500, "drawing clouds")
 arcade.set_background_color(arcade.csscolor.GREEN)
@@ -33,4 +34,3 @@ def main():
     arcade.run()
 
 main()
-

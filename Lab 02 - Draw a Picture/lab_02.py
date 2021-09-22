@@ -3,7 +3,7 @@ import arcade
 # Open a window
 arcade.open_window(600, 600, "Cell")
 
-arcade.set_background_color(arcade.csscolor.BLACK)
+arcade.set_background_color(arcade.csscolor.WHITE)
 
 arcade.start_render()
 
@@ -72,4 +72,8 @@ arcade.draw_circle_filled(310, 270, 20, arcade.csscolor.AQUA)
 arcade.draw_text("Vesicle", 298, 270,arcade.csscolor.WHITE, 6)
 arcade.finish_render()
 
+# Draw a smiley face
+arcade.draw_circle_filled(300, 300, 500, arcade.csscolor.BLACK)
+
 arcade.run()
+
