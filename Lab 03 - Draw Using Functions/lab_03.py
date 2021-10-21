@@ -8,8 +8,14 @@ def draw_ground():
 
 def draw_cloud(x, y):
     """Draw ugly little cloud."""
-    arcade.draw_circle_filled(x, y, 10, arcade.csscolor.WHITE)
-    arcade.draw_circle_filled(x + 5, y, 10, arcade.csscolor.WHITE)
+    arcade.draw_circle_filled(x, y, 10, arcade.csscolor.SALMON)
+    arcade.draw_circle_filled(x, y, 5, arcade.csscolor.PURPLE)
+    arcade.draw_circle_filled(x + 5, y, 10, arcade.csscolor.SALMON)
+    arcade.draw_circle_filled(x + 5, y, 5, arcade.csscolor.PURPLE)
+    arcade.draw_circle_filled(x - 5, y, 10, arcade.csscolor.SALMON)
+    arcade.draw_circle_filled(x - 5, y, 5, arcade.csscolor.PURPLE)
+    arcade.draw_circle_filled(x, y + 5, 10, arcade.csscolor.SALMON)
+    arcade.draw_circle_filled(x, y + 5, 5, arcade.csscolor.PURPLE)
 
 def draw_bird(x, y):
     """Draw ugly little bird."""
