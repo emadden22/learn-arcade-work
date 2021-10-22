@@ -111,7 +111,7 @@ class MyGame(arcade.Window):
             self.cells.change_y = 0
 
     def on_mouse_press(self, x, y, button, modifiers):
-        if button == arcade.MOUSE_BUTTON_RIGHT:
+        if button == arcade.MOUSE_BUTTON_LEFT:
             arcade.play_sound(self.rock_sound)
 
 
