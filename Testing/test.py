@@ -1,76 +1,87 @@
+import random
 import arcade
 
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
-MOVEMENT_SPEED = 5
-DEAD_ZONE = 0.02
+SPRITE_SCALING_PLAYER = 0.5
+SPRITE_SCALING_HEALTH = 0.2
+HEALTH_COUNT = 50
 
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 
-class Ball:
-    def __init__(self, position_x, position_y, change_x, change_y, radius, color):
-
-        # Take the parameters of the init function above,
-        # and create instance variables out of them.
-        self.position_x = position_x
-        self.position_y = position_y
-        self.change_x = change_x
-        self.change_y = change_y
-        self.radius = radius
-        self.color = color
-
-    def draw(self):
-        """ Draw the balls with the instance variables we have. """
-        arcade.draw_circle_filled(self.position_x,
-                                  self.position_y,
-                                  self.radius,
-                                  self.color)
-
-    def update(self):
-        # Move the ball
-        self.position_y += self.change_y
-        self.position_x += self.change_x
-
-        # See if the ball hit the edge of the screen. If so, change direction
-        if self.position_x < self.radius:
-            self.position_x = self.radius
-
-        if self.position_x > SCREEN_WIDTH - self.radius:
-            self.position_x = SCREEN_WIDTH - self.radius
-
-        if self.position_y < self.radius:
-            self.position_y = self.radius
-
-        if self.position_y > SCREEN_HEIGHT - self.radius:
-            self.position_y = SCREEN_HEIGHT - self.radius
 
 
 class MyGame(arcade.Window):
 
-    def __init__(self, width, height, title):
+    def __init__(self):
 
-        # Call the parent class's init function
-        super().__init__(width, height, title)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Sprites Lab")
 
-        # Make the mouse disappear when it is over the window.
-        # So we just see our object, not the pointer.
+        self.player_list = None
+        self.health_list = None
+
+        self.player_sprite = None
+        self.score = 0
+
         self.set_mouse_visible(False)
 
-        arcade.set_background_color(arcade.color.ASH_GREY)
+        arcade.set_background_color(arcade.color.RED)
 
-        # Create our ball
-        self.ball = Ball(50, 50, 0, 0, 15, arcade.color.AUBURN)
+    def setup(self):
 
+        self.player_list = arcade.SpriteList()
+        self.health_list = arcade.SpriteList()
+
+        self.score = 0
+
+        self.player_sprite = arcade.Sprite("slimeBlue_move.png)"), SPRITE_SCALING_PLAYER
+        self.player_sprite.center_x = 60
+        self.player_sprite.center_y = 80
+        self.player_list.append(self.player_sprite)
+
+        for i in range(HEALTH_COUNT):
+
+
+            health = arcade.Sprite("tankGreen_barrel3.png"), SPRITE_SCALING_HEALTH
+
+            health.center_x = random.randrange(SCREEN_WIDTH)
+            health.center_y = random.randrange(150, SCREEN_HEIGHT)
+
+            # Add the coin to the lists
+            self.health_list.append(health)
+
+        arcade.set_background_color(arcade.color.AMAZON)
 
     def on_draw(self):
 
-        """ Called whenever we need to draw the window. """
         arcade.start_render()
-        self.ball.draw()
 
+        self.health_list.draw()
+        self.player_list.draw()
+
+        # Render the text
+        arcade.draw_text(f"Score: {self.score}", 10, 20, arcade.color.BLACK, 14)
+
+    def on_mouse_motion(self, x, y, dx, dy):
+
+        self.player_sprite.center_x = x
+
+    def update(self, delta_time):
+
+        self.health_list.update()
+
+        health_up_list = arcade.check_for_collision_with_list(self.player_sprite,
+                                                              self.health_list)
+
+        for health in health_up_list:
+            health.remove_from_sprite_lists()
+            self.score += 1
 
 def main():
-    window = MyGame(640, 480, "Drawing Example")
+
+    window = MyGame()
+    window.setup()
     arcade.run()
 
 
-main()
+if __name__ == "__main__":
+    main()
