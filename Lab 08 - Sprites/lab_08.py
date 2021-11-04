@@ -5,13 +5,13 @@ import math
 SPRITE_SCALING_PLAYER = 0.5
 SPRITE_SCALING_HEALTH = 1
 SPRITE_SCALING_NOT_HEALTH = 1
-HEALTH_COUNT = 25
+HEALTH_COUNT = 50
 NOT_HEALTH_COUNT = 25
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 rock_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_rockHit2.wav")
-hurt_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_hurt4.wav")
+hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
 
 class Health(arcade.Sprite):
 
@@ -87,12 +87,12 @@ class MyGame(arcade.Window):
         self.health_list = arcade.SpriteList()
         self.not_health_list = arcade.SpriteList()
 
-        self.hurt_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_hurt4.wav")
+        self.hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
         self.rock_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_rockHit2.wav")
 
         self.score = 0
 
-        self.player_sprite = arcade.Sprite("slimeBlue_move.png", SPRITE_SCALING_PLAYER)
+        self.player_sprite = arcade.Sprite("../Lab 09 - Sprites and Walls/slimeBlue_move.png", SPRITE_SCALING_PLAYER)
 
         self.player_sprite.center_x = 60
         self.player_sprite.center_y = 80
@@ -100,7 +100,7 @@ class MyGame(arcade.Window):
 
         for i in range(HEALTH_COUNT):
 
-            health = Health("tankGreen_barrel3.png", SPRITE_SCALING_HEALTH)
+            health = Health("../Lab 09 - Sprites and Walls/tankGreen_barrel3.png", SPRITE_SCALING_HEALTH)
 
             health.center_x = random.randrange(SCREEN_WIDTH)
             health.center_y = random.randrange(SCREEN_HEIGHT)

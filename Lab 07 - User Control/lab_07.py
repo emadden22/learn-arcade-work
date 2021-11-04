@@ -5,7 +5,7 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 MOVEMENT_SPEED = 10
 rock_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_rockHit2.wav")
-hurt_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_hurt4.wav")
+hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
 
 
 def draw_cells(x, y, radius, color):
@@ -31,7 +31,7 @@ class Cells:
         self.radius = radius
         self.color = color
 
-        self.hurt_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_hurt4.wav")
+        self.hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
 
 
     def draw(self):
@@ -67,6 +67,49 @@ class Cells:
             self.position_y = SCREEN_HEIGHT - self.radius
             arcade.play_sound(self.hurt_sound)
 
+class Virus:
+    def __init__(self, position_x, position_y, change_x, change_y, width, length, color):
+
+        # Take the parameters of the init function above,
+        # and create instance variables out of them.
+        self.position_x = position_x
+        self.position_y = position_y
+        self.change_x = change_x
+        self.change_y = change_y
+        self.radius
+        self.width = width
+        self.length = length
+        self.color = color
+
+        self.hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
+
+    def update(self):
+
+        self.position_y += self.change_y
+        self.position_x += self.change_x
+
+        if self.position_x < self.width:
+            self.position_x = self.width
+            arcade.play_sound(self.hurt_sound)
+
+        if self.position_x > SCREEN_WIDTH - self.width:
+            self.position_x = SCREEN_WIDTH - self.width
+            arcade.play_sound(self.hurt_sound)
+
+        if self.position_y < self.width:
+            self.position_y = self.width
+            arcade.play_sound(self.hurt_sound)
+
+        if self.position_y > SCREEN_HEIGHT - self.width:
+            self.position_y = SCREEN_HEIGHT - self.width
+            arcade.play_sound(self.hurt_sound)
+
+
+    def draw(self):
+        """ Draw the balls with the instance variables we have. """
+        arcade.draw_circle_filled(self.position_x, self.position_y, self.radius, self.color)
+        arcade.draw_rectangle_filled(self.position_x, self.position_y, self.width, self.length, self.color)
+
 class MyGame(arcade.Window):
 
     def __init__(self, width, height, title):
@@ -75,6 +118,8 @@ class MyGame(arcade.Window):
         self.set_mouse_visible(False)
 
         self.cells = Cells(50, 50, 0, 0, 15, arcade.csscolor.DARK_SALMON)
+
+        self.virus = Virus(30, 10, 0, 0, 20, arcade.csscolor.BLUE)
 
         self.rock_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_rockHit2.wav")
 
@@ -86,6 +131,7 @@ class MyGame(arcade.Window):
         arcade.set_background_color(arcade.csscolor.BLACK)
         arcade.draw_circle_filled(400, 300, 300, arcade.csscolor.RED)
         self.cells.draw()
+        self.virus.draw()
 
     def update(self, delta_time):
         self.cells.update()
