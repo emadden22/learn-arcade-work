@@ -4,7 +4,6 @@ def split_line(line):
     return re.findall('[A-Za-z]+(?:\'[A-Za-z]+)?',line)
 
 def main():
-    """ Read in lines from a file """
 
     my_file = open("dictionary.txt")
 
@@ -32,7 +31,6 @@ def main():
             current_list_position = 0
 
             while current_list_position < len(dictionary_list) and dictionary_list[current_list_position] != key:
-
                 current_list_position += 1
             if current_list_position == len(dictionary_list):
                 print("possible misspelled word:", current_list_position, word)
