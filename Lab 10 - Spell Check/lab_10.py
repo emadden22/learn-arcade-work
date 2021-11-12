@@ -20,7 +20,11 @@ def main():
 
     my_alice_file = open("AliceInWonderLand200.txt")
 
+    line_num = 0
+
     for line in my_alice_file:
+
+        line_num += 1
 
         word_list = split_line(line)
 
@@ -32,8 +36,10 @@ def main():
 
             while current_list_position < len(dictionary_list) and dictionary_list[current_list_position] != key:
                 current_list_position += 1
+
             if current_list_position == len(dictionary_list):
-                print("possible misspelled word:", current_list_position, word)
+                print("possible misspelled word:", line_num, word)
+
     my_file.close()
 
     my_file = open("dictionary.txt")
@@ -52,7 +58,11 @@ def main():
 
     my_alice_file = open("AliceInWonderLand200.txt")
 
+    line_num = 0
+
     for line in my_alice_file:
+
+        line_num += 1
 
         word_list = split_line(line)
 
@@ -73,7 +83,7 @@ def main():
                 else:
                     found = True
             if found is not True:
-                print("Possible misspelled word:", lower_bound, word)
+                print("Possible misspelled word:", line_num, word)
 
     my_file.close()
 
