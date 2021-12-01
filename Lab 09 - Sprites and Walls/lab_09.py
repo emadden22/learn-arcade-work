@@ -62,13 +62,15 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.SpriteList()
         self.health_list = arcade.SpriteList()
 
-        self.hurt_sound = arcade.load_sound("arcade_resources_sounds_hurt4.wav")
+        self.hurt_sound = arcade.load_sound("../Lab 12 - Final Lab/arcade_resources_sounds_hurt4.wav")
 
         self.score = 0
 
         # Set up the player
-        self.player_sprite = arcade.Sprite("slimeBlue_move.png",
+        self.player_sprite = arcade.Sprite("../Lab 12 - Final Lab/slimeBlue_move.png",
                                            scale=0.4)
+
+        self.enemy_sprite = arcade.Sprite("")
         self.player_sprite.center_x = 256
         self.player_sprite.center_y = 512
         self.player_list.append(self.player_sprite)
@@ -77,31 +79,31 @@ class MyGame(arcade.Window):
             for y in range(0, 1930, 175):
 
                 if random.randrange(30) > 9:
-                    wall = arcade.Sprite("treeGreen_large.png", SPRITE_SCALING)
+                    wall = arcade.Sprite("../Lab 12 - Final Lab/treeGreen_large.png", SPRITE_SCALING)
                     wall.center_x = x
                     wall.center_y = y
                     self.wall_list.append(wall)
 
         for x in range(0, 1550, 64):
-            wall = arcade.Sprite("water.png", SPRITE_SCALING)
+            wall = arcade.Sprite("../Lab 12 - Final Lab/water.png", SPRITE_SCALING)
             wall.center_x = x
             wall.center_y = -50
             self.wall_list.append(wall)
 
         for x in range(0, 1550, 64):
-            wall = arcade.Sprite("water.png", SPRITE_SCALING)
+            wall = arcade.Sprite("../Lab 12 - Final Lab/water.png", SPRITE_SCALING)
             wall.center_x = x
             wall.center_y = 2000
             self.wall_list.append(wall)
 
         for y in range(0, 2000, 64):
-            wall = arcade.Sprite("water.png", SPRITE_SCALING)
+            wall = arcade.Sprite("../Lab 12 - Final Lab/water.png", SPRITE_SCALING)
             wall.center_x = 0
             wall.center_y = y
             self.wall_list.append(wall)
 
         for y in range(0, 2000, 64):
-            wall = arcade.Sprite("water.png", SPRITE_SCALING)
+            wall = arcade.Sprite("../Lab 12 - Final Lab/water.png", SPRITE_SCALING)
             wall.center_x = 1535
             wall.center_y = y
             self.wall_list.append(wall)
@@ -109,7 +111,7 @@ class MyGame(arcade.Window):
 
         for i in range(HEALTH_COUNT):
 
-            health = arcade.Sprite("../Lab 09 - Sprites and Walls/tankGreen_barrel3.png", SPRITE_SCALING_HEALTH)
+            health = arcade.Sprite("../Lab 12 - Final Lab/tankGreen_barrel3.png", SPRITE_SCALING_HEALTH)
 
             health_placed_successfully = False
 

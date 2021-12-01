@@ -4,8 +4,8 @@ import arcade
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 MOVEMENT_SPEED = 10
-rock_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_rockHit2.wav")
-hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
+rock_sound = arcade.load_sound("../Lab 12 - Final Lab/arcade_resources_sounds_rockHit2.wav")
+hurt_sound = arcade.load_sound("../Lab 12 - Final Lab/arcade_resources_sounds_hurt4.wav")
 
 
 def draw_cells(x, y, radius, color):
@@ -31,7 +31,7 @@ class Cells:
         self.radius = radius
         self.color = color
 
-        self.hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
+        self.hurt_sound = arcade.load_sound("../Lab 12 - Final Lab/arcade_resources_sounds_hurt4.wav")
 
 
     def draw(self):
@@ -81,7 +81,7 @@ class Virus:
         self.length = length
         self.color = color
 
-        self.hurt_sound = arcade.load_sound("../Lab 09 - Sprites and Walls/arcade_resources_sounds_hurt4.wav")
+        self.hurt_sound = arcade.load_sound("../Lab 12 - Final Lab/arcade_resources_sounds_hurt4.wav")
 
     def update(self):
 
@@ -121,7 +121,7 @@ class MyGame(arcade.Window):
 
         self.virus = Virus(30, 10, 0, 0, 20, arcade.csscolor.BLUE)
 
-        self.rock_sound = arcade.load_sound("../Lab 08 - Sprites/arcade_resources_sounds_rockHit2.wav")
+        self.rock_sound = arcade.load_sound("../Lab 12 - Final Lab/arcade_resources_sounds_rockHit2.wav")
 
 
 

@@ -1,0 +1,226 @@
+1. Write code to swap the values 25 and 40.
+my_list = [55, 41, 52, 68, 45, 27, 40, 25, 37, 26]
+
+temp = my_list[7]
+my_list[7] = my_list[6]
+my_list[6] = temp
+
+print(my_list)
+
+2. Write code to swap the values 2 and 27.
+
+my_list = [27, 32, 18,  2, 11, 57, 14, 38, 19, 91]
+
+temp = my_list[3]
+my_list[3] = my_list[1]
+my_list[1] = temp
+
+print(my_list)
+
+3. Why does the following code not work? Explain it, don't just list working code.
+
+my_list = [70, 32, 98, 88, 92, 36, 81, 83, 87, 66]
+temp = my_list[0]
+my_list[1] = my_list[0]
+my_list[0] = temp
+
+my_list[0] is set to temp twice
+
+4. Show how the following numbers can be sorted using the selection sort.
+Show the numbers after each iteration of the outer loop, similar to what is shown in the book.
+I am NOT looking for a copy of the code to do the sort.
+If you include any code for problems 4-7 you are doing it wrong.
+
+97   74    8   98   47   62   12   11    0   60
+0   74    8   98   47   62   12   11    97   60
+0   8    74  98   47   62   12   11    97   60
+0   8    11  98   47   62   12   74    97   60
+0   8    11  12   47   62   98   74    97   60
+0   8    11  12   47   62   98   74    97   60
+0   8    11  12   47   60   98   74    97   62
+0   8    11  12   47   60   62   74    97   98
+0   8    11  12   47   60   62   74    97   98
+0   8    11  12   47   60   62   74    97   98
+0   8    11  12   47   60   62   74    97   98
+0   8    11  12   47   60   62   74    97   98
+
+5. Show how the following numbers can be sorted using the selection sort:
+
+74   92   18   47   40   58    0   36   29   25
+ 0   92   18   47   40   58    74  36   29   25
+ 0   18   92   47   40   58    74  36   29   25
+ 0   18   25   47   40   58    74  36   29   92
+ 0   18   25   29   40   58    74  36   47   92
+ 0   18   25   29   36   58    74  40   47   92
+ 0   18   25   29   36   49    74  58   47   92
+ 0   18   25   29   36   49    47  58   74   92
+ 0   18   25   29   36   49    47  58   74   92
+ 0   18   25   29   36   49    47  58   74   92
+ 0   18   25   29   36   49    47  58   74   92
+
+6. Show how the following numbers can be sorted using the INSERTION sort. (Note: If you think the 0 gets immediately sorted into position, you are doing it wrong. Go back and re-read how this sort works.)
+
+74   92   18   47   40   58    0   36   29   25
+74   92   18   47   40   58    0   36   29   25
+18   74   92   47   40   58    0   36   29   25
+18  47   74   92    40   58    0   36   29  25
+18   40  47   74   92  58    0   36   29   25
+0    18   40  47   74   92  58  36   29   25
+0    18   40  47  58  74   92  36   29   25
+0    18  36  40  47  58  74   92    29   25
+0    18  29  36  40  47  58  74   92     25
+0    18  25  29  36  40  47  58  74   92
+0    18  25  29  36  40  47  58  74   92
+
+7. Show how the following numbers can be sorted using the insertion sort:
+
+37   11   14   50   24    7   17   88   99    9
+11  37   14   50   24    7   17   88   99    9
+11  14  37  50   24    7   17   88   99    9
+11  14   24  37  50    7   17   88   99    9
+7  11  14   24  37  50   17   88   99    9
+7  11  14   17  24  37  50   88   99    9
+7   9  11  14   17  24  37  50   88   99
+7   9  11  14   17  24  37  50   88   99
+
+8. Explain what `min_pos` does in the selection sort.
+min_pos means the position which holds the lowest value in the sort.
+It is meant to be swapped with any value found to be lower.
+
+9. Explain what `cur_pos` does in the selection sort.
+cur_pos means the position being examined or iterated at the beginning
+It becomes the min_pos which is checked against the scan_pos
+It is also the position used to direct the scan_pos
+
+10. Explain what `scan_pos` does in the selection sort.
+scan_pos is the value being iterated through as you loop through a list
+It is checked against the min_pos for a lower value
+
+11. Explain what `key_pos` and `key_value` are in the insertion sort.
+The key_pos is the point where a list is sorted and unsorted
+The key_value is the lowest value in the list. It can shift if the scan_pos finds a smaller number
+
+12. Explain `scan_pos` in the insertion sort.
+scan_pos is the value being iterated through
+It starts to the right of the key_pos and loops to find a value lower than the key_value
+
+13. Look at the example sort program at the very end of this chapter:
+
+https://learn.arcade.academy/en/latest/chapters/30_sorting/sorting.html
+
+
+Modify the sorts to print the number of times the inside loop is run, and the number of times the outside loop is run.
+Modify the program to work with a list of 100. Paste the code you used here. Run the program and list the numbers you got here.
+(DON'T FORGET TO INCLUDE THE RESULTS!)
+ Inside loop for selection sort should be about 5,000, and insertion sort 2,500. Double-check if you don't get numbers close to these.
+
+import random
+
+
+def selection_sort(my_list):
+    """ Sort a list using the selection sort """
+    total_select_inside = 0
+    total_select_outside = 0
+    # Loop through the entire array
+    for cur_pos in range(len(my_list)):
+        # Find the position that has the smallest number
+        # Start with the current position
+        min_pos = cur_pos
+        total_select_outside += 1
+
+        # Scan left to right (end of the list)
+        for scan_pos in range(cur_pos + 1, len(my_list)):
+            total_select_inside += 1
+
+            # Is this position smallest?
+            if my_list[scan_pos] < my_list[min_pos]:
+                # It is, mark this position as the smallest
+                min_pos = scan_pos
+
+        # Swap the two values
+        temp = my_list[min_pos]
+        my_list[min_pos] = my_list[cur_pos]
+        my_list[cur_pos] = temp
+
+    print(total_select_inside)
+    print(total_select_outside)
+
+
+def insertion_sort(my_list):
+    """ Sort a list using the insertion sort """
+    total_insert_inside = 0
+    total_insert_outside = 0
+    # Start at the second element (pos 1).
+    # Use this element to insert into the
+    # list.
+    for key_pos in range(1, len(my_list)):
+        total_insert_outside += 1
+        # Get the value of the element to insert
+        key_value = my_list[key_pos]
+
+        # Scan from right to the left (start of list)
+        scan_pos = key_pos - 1
+
+        # Loop each element, moving them up until
+        # we reach the position the
+        while (scan_pos >= 0) and (my_list[scan_pos] > key_value):
+            my_list[scan_pos + 1] = my_list[scan_pos]
+            scan_pos = scan_pos - 1
+            total_insert_inside += 1
+
+        # Everything's been moved out of the way, insert
+        # the key into the correct location
+        my_list[scan_pos + 1] = key_value
+    print(total_insert_inside)
+    print(total_insert_outside)
+
+# This will point out a list
+# For more information on the print formatting {:3}
+# see the chapter on print formatting.
+def print_list(my_list):
+    for item in my_list:
+        print(f"{item:3}", end="")
+    print()
+
+
+def main():
+    # Create two lists of the same random numbers
+    list_for_selection_sort = []
+    list_for_insertion_sort = []
+    list_size = 100
+    for i in range(list_size):
+        new_number = random.randrange(101)
+        list_for_selection_sort.append(new_number)
+        list_for_insertion_sort.append(new_number)
+
+    # Print the original list
+    print("Original List")
+    print_list(list_for_selection_sort)
+
+    # Use the selection sort and print the result
+    print("Selection Sort")
+    selection_sort(list_for_selection_sort)
+    print_list(list_for_selection_sort)
+
+    # Use the insertion sort and print the result
+    print("Insertion Sort")
+    insertion_sort(list_for_insertion_sort)
+    print_list(list_for_insertion_sort)
+
+
+main()
+
+RESULTS:
+C:\Users\ethan.madden\Desktop\learn-arcade-work\venv\Scripts\python.exe C:/Users/ethan.madden/Desktop/learn-arcade-work/venv/sortingattempts.py
+Original List
+ 56 12 58  7 82 23 51 53 99 76 74  0 66 77 96 38 40 92 97 37 62 72 16  1 97 84 45 55 57  3 95100 81 77 43 65 98 72 31 17 45 52 71 43 55 55 17 32 48 75 14 92 67100 47 34 74 27  5 15 96 75  9  7 61 95 74 98 62 39 61 40 14 15 64 29 18 94  8 57  7 24 53 59 28 50 49 68 38 68 73 93 42 54 31 64 39 57 77 14
+Selection Sort
+4950
+100
+  0  1  3  5  7  7  7  8  9 12 14 14 14 15 15 16 17 17 18 23 24 27 28 29 31 31 32 34 37 38 38 39 39 40 40 42 43 43 45 45 47 48 49 50 51 52 53 53 54 55 55 55 56 57 57 57 58 59 61 61 62 62 64 64 65 66 67 68 68 71 72 72 73 74 74 74 75 75 76 77 77 77 81 82 84 92 92 93 94 95 95 96 96 97 97 98 98 99100100
+Insertion Sort
+2649
+99
+  0  1  3  5  7  7  7  8  9 12 14 14 14 15 15 16 17 17 18 23 24 27 28 29 31 31 32 34 37 38 38 39 39 40 40 42 43 43 45 45 47 48 49 50 51 52 53 53 54 55 55 55 56 57 57 57 58 59 61 61 62 62 64 64 65 66 67 68 68 71 72 72 73 74 74 74 75 75 76 77 77 77 81 82 84 92 92 93 94 95 95 96 96 97 97 98 98 99100100
+
+Process finished with exit code 0

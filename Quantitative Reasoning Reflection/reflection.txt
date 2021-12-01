@@ -1,0 +1,41 @@
+Ethan Madden
+12/1/21
+Quantitative Reasoning Reflection
+
+1. In the process of adding function to my programs this semester, I utilized a variety of
+methods, techniques and algorithms. I have used lists to create sets of information to pull from
+and add to when I needed to refer to and edit that information, such as my video game sprite
+lists which contained sprites I would need to render and remove according to gameplay. I have used loops
+and if statements to create multiple renderings from the same information, while also being sure that
+the renderings do not interfere with each other, and if they do, act accordingly. Classes have been
+useful in similar ways to lists, but instead hold the details of required information that can be fed
+into the lists. Example pieces of code have been integral, demonstrating the use of each technique at
+it's core so that I may utilize it for my own purposes.
+
+2. Because techniques in programming have a base function with ambiguous applications, it is important
+to convey clear context to solutions. Commenting your intention for including code is significant for other
+programmers to be able to understand what purpose it was meant to fulfill. Additionally, in creating the code
+itself, it is important that names and labels are clear and concise so that they are easy to distinguish from
+one another. Structure is also significant, not just for the code itself, but for reading of the code. Lines
+can be easily confused if they run together. Making sure your message is well communicated through comments of
+intention, how the code works, and with clear labels can ensure that another programmer understands what your
+code does, as well as how to apply the concepts you have used in their own code.
+
+3. Very often, I have next to no idea what I am doing when I code. It is been very useful for me to run a program
+and check for function. If my program does not run, I can use the error messages to identify what problems the
+computer has with my code, where the problems are, and get a reference for how to find the solution. I can take the
+errors to google or refer to correlating sections of the book. If I do not recieve errors, I take that as a red flag
+and I check to see if my output is what I wanted. I can do this by checking the expectations of the assignment or
+I can refer to my own expectations and what I feel I need it to do. Additionally, I have been fortunate to have a
+TA and professor who are willing to help me with the code when I hit a wall.
+
+4. Algorithms are very useful tools, but numbers lack nuance. Computational methods have one output for one situation,
+evaluating each situation, comparing it to the parameters included, and utilizing only the directions provided. If
+a situation does not fall within parameters, there is nothing to do and an error occurs. At this level, algorithms
+are unable to learn and adapt to newly encountered information. This limits the ability of a program to only act when
+given situations that were previously thought of. If we were to treat people with this same method of calculation and
+conclusions, we would be percieved as cruel and unfeeling. We are constantly being put in new situations with new
+information that needs to be considered when moving forward. Evaluating teachers based on their students would
+only take into consideration how their students do, meaning a good teacher would face the consequences of having
+students who do not care or are not bright, even if the teacher is good at their job. Stats alone may give insight but
+are not capable of conveying the depth of a situation.
