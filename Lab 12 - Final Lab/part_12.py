@@ -6,6 +6,8 @@ Artwork from https://api.arcade.academy/en/latest/resources.html
 
 import random
 import arcade
+import math
+import os
 
 SPRITE_SCALING = 0.5
 SPRITE_SCALING_PLAYER = 0.5
@@ -13,6 +15,10 @@ SPRITE_SCALING_HEALTH = 1
 SPRITE_SCALING_NOT_HEALTH = 1
 HEALTH_COUNT = 2
 ENEMY_COUNT = 15
+BULLET_SPEED = 10
+
+TEXTURE_LEFT = 0
+TEXTURE_RIGHT = 1
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -35,12 +41,27 @@ class Player(arcade.Sprite):
         super().__init__(filename, scale=0.4)
 
         self.scale = 0.4
+        self.textures = []
+
+        # Load a left facing texture and a right facing texture.
+        # flipped_horizontally=True will mirror the image we load.
+        texture = arcade.load_texture("slimeBlue_move.png")
+        self.textures.append(texture)
+        texture = arcade.load_texture("slimeBlue_move.png",
+                                      flipped_horizontally=True)
+        self.textures.append(texture)
+
+        # By default, face right.
+        self.texture = texture
 
 
     def update(self):
 
-        self.change_x += self.change_x
-        self.change_y += self.change_y
+        if self.change_x < 0:
+            self.texture = self.textures[TEXTURE_LEFT]
+        elif self.change_x > 0:
+            self.texture = self.textures[TEXTURE_RIGHT]
+
 
 class Enemy(arcade.Sprite):
 
@@ -70,6 +91,24 @@ class Enemy(arcade.Sprite):
         if self.top > 1920:
             self.change_y *= -1
 
+class Bullet(arcade.Sprite):
+
+    # https://shimejis.xyz/directory/blobs-blob-by-reitanna
+
+    def __init__(self, filename, sprite_scaling):
+
+        super().__init__(filename, sprite_scaling)
+
+        self.change_x += self.change_x
+        self.change_y += self.change_y
+
+    def update(self):
+
+        self.center_x += self.change_x
+        self.center_y += self.change_y
+
+        if self.right > 1480:
+            self.change_x *= -1
 
 class MyGame(arcade.Window):
     """ Main application class. """
@@ -80,10 +119,14 @@ class MyGame(arcade.Window):
         """
         super().__init__(width, height, title, resizable=True)
 
+        self.frame_count = 0
         # Sprite lists
         self.player_list = None
         self.wall_list = None
+        self.health_list = None
         self.enemy_list = None
+        self.bullet_list = None
+        self.enemy_bullet_list = None
 
         # Set up the player
         self.player_sprite = None
@@ -109,6 +152,8 @@ class MyGame(arcade.Window):
         self.enemy_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
         self.health_list = arcade.SpriteList()
+        self.bullet_list = arcade.SpriteList()
+        self.enemy_bullet_list = arcade.SpriteList()
 
         self.hurt_sound = arcade.load_sound("arcade_resources_sounds_hurt4.wav")
 
@@ -121,8 +166,7 @@ class MyGame(arcade.Window):
         # https://api.arcade.academy/en/latest/resources.html
 
         # Set up the player
-        self.player_sprite = Player("slimeBlue_move.png",
-                                           scale=0.4)
+        self.player_sprite = Player("slimeBlue_move.png", 0.4)
 
         self.player_sprite.center_x = 256
         self.player_sprite.center_y = 512
@@ -242,6 +286,8 @@ class MyGame(arcade.Window):
         self.player_list.draw()
         self.health_list.draw()
         self.enemy_list.draw()
+        self.bullet_list.draw()
+        self.enemy_bullet_list.draw()
 
         self.camera_gui.use()
 
@@ -249,12 +295,11 @@ class MyGame(arcade.Window):
 
         arcade.draw_text(f"Lives: {self.lives}", 10, 50, arcade.color.BLACK, 14)
 
-        if self.lives == 0:
+        if self.lives <= 0:
             arcade.draw_text("GAME OVER", 200, 300, arcade.color.BLACK, 50)
 
-        if len(self.health_list) == 0:
+        if len(self.health_list) == 0 and len(self.enemy_list) == 0:
             arcade.draw_text("You Win!", 290, 300, arcade.color.AVOCADO, 50)
-
 
 
     def on_key_press(self, key, modifiers):
@@ -267,6 +312,15 @@ class MyGame(arcade.Window):
                 self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
             elif key == arcade.key.RIGHT:
                 self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+            if key == arcade.key.SPACE:
+                # Create a bullet
+                bullet = Bullet("shime1.png", .2)
+                bullet.center_x = self.player_sprite.center_x
+                bullet.center_y = self.player_sprite.center_y
+                bullet.change_x = BULLET_SPEED
+
+                # Add the bullet to the appropriate list
+                self.bullet_list.append(bullet)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
@@ -278,6 +332,8 @@ class MyGame(arcade.Window):
 
     def on_update(self, delta_time):
         """ Movement and game logic """
+
+        self.frame_count += 1
 
         if len(self.health_list) > 0:
             self.health_list.update()
@@ -301,7 +357,85 @@ class MyGame(arcade.Window):
                 self.lives -= 1
                 arcade.play_sound(self.bad_sound)
 
+        for bullet in self.bullet_list:
 
+            # Check this bullet to see if it hit a coin
+            hit_list = arcade.check_for_collision_with_list(bullet, self.enemy_list)
+
+            # If it did, get rid of the bullet
+            if len(hit_list) > 0:
+                bullet.remove_from_sprite_lists()
+
+            # For every coin we hit, add to the score and remove the coin
+            for enemy in hit_list:
+                enemy.remove_from_sprite_lists()
+                self.score += 1
+
+            if bullet.center_x <= 40:
+                bullet.remove_from_sprite_lists()
+
+        for enemy in self.enemy_list:
+
+            # First, calculate the angle to the player. We could do this
+            # only when the bullet fires, but in this case we will rotate
+            # the enemy to face the player each frame, so we'll do this
+            # each frame.
+
+            # Position the start at the enemy's current location
+            start_x = enemy.center_x
+            start_y = enemy.center_y
+
+            # Get the destination location for the bullet
+            dest_x = self.player_sprite.center_x
+            dest_y = self.player_sprite.center_y
+
+            # Do math to calculate how to get the bullet to the destination.
+            # Calculation the angle in radians between the start points
+            # and end points. This is the angle the bullet will travel.
+            x_diff = dest_x - start_x
+            y_diff = dest_y - start_y
+            angle = math.atan2(y_diff, x_diff)
+
+            # Set the enemy to face the player.
+            enemy.angle = math.degrees(angle) - 90
+
+            # Shoot every 60 frames change of shooting each frame
+            if enemy.center_x == self.player_sprite.center_x or enemy.center_y == self.player_sprite.center_y:
+                enemy_bullet = arcade.Sprite("sawHalf.png", scale=0.4)
+                enemy_bullet.center_x = start_x
+                enemy_bullet.center_y = start_y
+
+                # Angle the bullet sprite
+                enemy_bullet.angle = math.degrees(angle)
+
+                # Taking into account the angle, calculate our change_x
+                # and change_y. Velocity is how fast the bullet travels.
+                enemy_bullet.change_x = math.cos(angle) * BULLET_SPEED
+                enemy_bullet.change_y = math.sin(angle) * BULLET_SPEED
+
+                self.enemy_bullet_list.append(enemy_bullet)
+
+        for enemy_bullet in self.enemy_bullet_list:
+
+            # Check this bullet to see if it hit a coin
+            hit_list = arcade.check_for_collision_with_list(self.player_sprite,
+                                                            self.enemy_bullet_list)
+
+            # If it did, get rid of the bullet
+            if len(hit_list) > 0:
+                enemy_bullet.remove_from_sprite_lists()
+
+            # For every coin we hit, add to the score and remove the coin
+            for enemy in hit_list:
+                enemy.remove_from_sprite_lists()
+                self.lives -= 1
+
+            if enemy_bullet.center_x <= 40:
+                enemy_bullet.remove_from_sprite_lists()
+
+        self.enemy_bullet_list.update()
+        self.bullet_list.update()
+        self.player_list.update()
         self.physics_engine.update()
 
         # Scroll the screen to the player
