@@ -1850,7 +1850,7 @@ class GameView(arcade.View):
 
         self.score = 0
 
-        self.lives = 15
+        self.lives = 35
 
         self.boss_health = 20
 
